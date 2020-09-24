@@ -73,7 +73,7 @@ return  JSON.stringify(result);
     var myorgdb=db.db("studentorg");
     
 let existingUser=  await   myorgdb.collection("students").find({ sId:"+student.sId +"}).toArray();
-   if(!Array.isArray(existingUser)){
+   if(existingUser.length==0){
        console.log(existingUser)
  let result=  await   myorgdb.collection("students").insertOne(student);
     result2=result+1;
