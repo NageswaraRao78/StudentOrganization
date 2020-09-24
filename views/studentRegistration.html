@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 body {font-family: Arial, Helvetica, sans-serif;}
@@ -107,7 +109,7 @@ span.psw {
 
 <h2>Sudent Registration </h2>
 
-<form action="" method="post">
+<form id="sudentrigister">
 
 
   <div class="container">
@@ -118,7 +120,7 @@ span.psw {
 
         </td>
         <td>
-            <input type="text" placeholder="Enter Usname" name="sName" required>
+            <input type="text" placeholder="Enter Usname" id="sName" name="sName" required>
 
         </td>
     </tr> 
@@ -128,7 +130,7 @@ span.psw {
 
         </td>
         <td>
-            <input type="text" placeholder="Enter Usname" name="sId" required>
+            <input type="text" placeholder="Enter Usname"  id="sId"name="sId" required>
 
         </td>
     </tr> 
@@ -138,7 +140,7 @@ span.psw {
 
         </td>
         <td>
-            <input type="date" placeholder="Enter Usname" name="sDob" required>
+            <input type="date" placeholder="Enter Usname" id="sDob"name="sDob" required>
 
         </td>
     </tr>   
@@ -149,7 +151,7 @@ span.psw {
 
         </td>
         <td>
-            <input type="text" placeholder="Enter Usname" name="sClass" required>
+            <input type="text" placeholder="Enter Usname" id="sClass" name="sClass" required>
 
         </td>
     </tr>
@@ -169,6 +171,46 @@ span.psw {
 
 </form>
 </div> 
+<script>
 
+
+
+  $(document).ready( function(){
+    $("form").submit(function(){
+      let sname=$("#sName").val();
+      let sid=$("#sId").val();
+      let sdob=$("#sDob").val();
+       let sclass=$("#sClass").val();
+
+  
+      $.ajax({
+        type: "POST",
+        url: 'http://localhost:4000/rigisterStudent',
+    contentType: "application/x-www-form-urlencoded",
+  dataType: "json",
+  data:{sName:sname,sId:sid,sDob:sdob,sClass:sclass},
+  
+  success: function (response) {
+  let result=response.result;
+  if(result.ok==1){
+    alert("registration sucess");
+  
+  }else{
+    alert("registration failed");
+  }
+  
+  },
+  error: function (response) {
+  
+  alert(response);
+  
+  }
+  });
+      });
+  
+  });
+  
+  </script>
+  
 </body>
 </html>

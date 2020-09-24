@@ -30,16 +30,42 @@ console.log(req.body);
 });
 app.post('/singnupUser',(req,res)=>{
     let user=req.body;
-    res.send(appService.signupUser(user));
+    
+    console.log(user);
+(async function(){
+  let result=  await appService.signUpuser(user);
+
+  console.log(result)
+  res.send (result);
+}
+
+)();
     
 });
 app.post('/rigisterStudent',(req,res)=>{
     
-    let user=req.body;
-    res.send(appService.registerStudent(user));
+    let student=req.body;
+    console.log(student);
+(async function(){
+  let result=  await appService.registerstudents(student);
+
+  console.log(result)
+  res.send (result);
+}
+
+)();
 });
 app.get('/sudentDetails',(req,res)=>{
-    res.send(appService.getallStudents(user));
+
+    console.log(user);
+(async function(){
+  let result=  await appService.getallStudents();
+
+  console.log(result)
+  res.send (result);
+}
+
+)();
 });
 
-app.listen(4200,()=>console.log("server started"));
+app.listen(4000,()=>console.log("server started"));
