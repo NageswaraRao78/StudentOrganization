@@ -4,24 +4,7 @@ module.exports.myval=val
 const { Console } = require('console');
  var mongoclient=mongodb.MongoClient;
  var url = "mongodb://localhost:27017/";
- function insertStudent(student,res){
-     mongoclient.connect(url,{ useUnifiedTopology: true } ,function(err,db){
-        if(err)throw err
-             db.collection("students").insertOne(student,function(err,result){
-                 if(err){
-                     console.log(err);
-                     res.send(err);
-
-                 }else{
-                     console.log(result);
-                     res.send(result);
-                 }
-                 db.close();
-             })
-         
-     })
- }
-module.exports.registerStudent=insertStudent;
+  
 async function login(user){
 
    let db=await mongoclient.connect(url,{ useUnifiedTopology: true } );
@@ -39,9 +22,10 @@ async function login(user){
 
            }
             
-        
-    
 }
+module.exports.loginUser=login;
+
+
 async function finduser(user){
     let db=await mongoclient.connect(url,{ useUnifiedTopology: true } );
              var myorgdb=db.db("studentorg");
@@ -57,7 +41,7 @@ async function finduser(user){
      
  }
 
-module.exports.loginUser=login;
+
 
    async function signUp(user,res){
     let db=await mongoclient.connect(url,{ useUnifiedTopology: true } );
@@ -88,9 +72,10 @@ return  JSON.stringify(result);
     let db=await mongoclient.connect(url,{ useUnifiedTopology: true } );
     var myorgdb=db.db("studentorg");
     
-let existingUser=  await   myorgdb.collection("students").find("{ sId:"+student.sId +"}");
-   if(existingUser==null){
- let result=  await   myorgdb.collection("students").insertOne(user);
+let existingUser=  await   myorgdb.collection("students").find({ sId:"+student.sId +"}).toArray();
+   if(!Array.isArray(existingUser)){
+       console.log(existingUser)
+ let result=  await   myorgdb.collection("students").insertOne(student);
     result2=result+1;
 console.log(result2)
  db.close();
@@ -108,11 +93,13 @@ return  JSON.stringify(result);
 
 
 
-    async function getstudents( student){
+    async function getstudentslist( ){
         let db=await mongoclient.connect(url,{ useUnifiedTopology: true } );
         var myorgdb=db.db("studentorg");
-        let students=  await   myorgdb.collection("students").find({});
+        let students=  await   myorgdb.collection("students").find({}).toArray();
+
+    
 
     return JSON.stringify(students);
  }
- module.exports.getallStudents=getStudents;
+ module.exports.getallStudents=getstudentslist;

@@ -57,7 +57,7 @@ app.post('/rigisterStudent',(req,res)=>{
 });
 app.get('/sudentDetails',(req,res)=>{
 
-    console.log(user);
+
 (async function(){
   let result=  await appService.getallStudents();
 
