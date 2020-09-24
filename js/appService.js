@@ -10,14 +10,12 @@ async function login(user){
    let db=await mongoclient.connect(url,{ useUnifiedTopology: true } );
             var myorgdb=db.db("studentorg");
             
-  let existingUser=  await   myorgdb.collection("users").find(user);
-           if(existingUser==null){
-         let result=  await   myorgdb.collection("users").insertOne(user);
-            result2=result+1;
-         console.log(result2)
-         db.close();
-        return JSON.stringify(result2);
+  let existingUser=  await   myorgdb.collection("users").find(user).toArray();
+           if(existingUser.length>0){
+               console.log(existingUser);
+            return JSON.stringify("{sucess:username or redirect to student register}");
            }else{db.close();
+            console.log(existingUser);
             return JSON.stringify("{message:username or password incorrect}");
 
            }
@@ -47,16 +45,16 @@ async function finduser(user){
     let db=await mongoclient.connect(url,{ useUnifiedTopology: true } );
     var myorgdb=db.db("studentorg");
     
-let existingUser=  await   myorgdb.collection("users").find("{ username:"+user.username +"}");
-   if(existingUser==null){
+let existingUser=  await   myorgdb.collection("users").find("{ username:"+user.username +"}").toArray();
+ if(existingUser.length==0){
  let result=  await   myorgdb.collection("users").insertOne(user);
-    result2=result+1;
+    result2=result;
  console.log(result2)
  db.close();
 return  JSON.stringify(result);
    }
    else{db.close();
-    return JSON.stringify("{message:userallready taken}");
+    return JSON.stringify("{message:username already taken}");
 
    }
     
@@ -76,7 +74,7 @@ let existingUser=  await   myorgdb.collection("students").find({ sId:"+student.s
    if(existingUser.length==0){
        console.log(existingUser)
  let result=  await   myorgdb.collection("students").insertOne(student);
-    result2=result+1;
+    result2=result
 console.log(result2)
  db.close();
 return  JSON.stringify(result);
